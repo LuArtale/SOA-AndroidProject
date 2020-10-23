@@ -40,7 +40,9 @@ public class MainActivity  extends Activity { //extends AppCompatActivity
         inputTextUser=(EditText)findViewById(R.id.inputTextUser);
         inputTextPass=(EditText)findViewById(R.id.inputTextPass);
 
-        buttonLogin.setOnClickListener((OnClickListener) buttonLogin);
+        buttonLogin = (Button) findViewById(R.id.buttonLogin);
+
+        buttonLogin.setOnClickListener(botonesListeners);
     }
 
     @Override
