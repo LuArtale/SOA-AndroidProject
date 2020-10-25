@@ -1,40 +1,27 @@
-package com.example.myfirstapp;
+package com.ea2soa.skyphototips;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+public class MainActivity extends Activity {
 
-
-public class MainActivity  extends Activity { //extends AppCompatActivity
-
-    //private Button btnEnviar;
-    //private EditText txtOrigen;
     private EditText inputTextUser;
     private EditText inputTextPass;
     private Button buttonLogin;
-
-    private String texto="";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //txtOrigen=(EditText)findViewById(R.id.txtOrigen);
-        //btnEnviar = (Button) findViewById(R.id.btnEnviar);
-        //btnEnviar.setOnClickListener(botonesListeners);
         Log.i("Ejecuto","Ejecuto onCreate");
 
         inputTextUser=(EditText)findViewById(R.id.inputTextUser);
@@ -98,16 +85,15 @@ public class MainActivity  extends Activity { //extends AppCompatActivity
                 //Si se ocurrio un evento en el boton OK
                 case R.id.buttonLogin:
                     //se genera un Intent para poder lanzar la activity principal
-                    intent=new Intent(MainActivity.this,DialogActivity.class);
+                    /*intent=new Intent(MainActivity.this,DialogActivity.class);
 
                     //Se le agrega al intent los parametros que se le quieren pasar a la activyt principal
                     //cuando se lanzado
                     intent.putExtra("textoOrigen",inputTextUser.getText().toString());
 
                     //se inicia la activity principal
-                    startActivity(intent);
+                    startActivity(intent);*/
 
-                    //inputTextUser.setText("Te has logueado! Ponele...");
                     Toast.makeText(getApplicationContext(),"Te has logueado! Ponele...",Toast.LENGTH_LONG).show();
 
                     break;
@@ -118,8 +104,6 @@ public class MainActivity  extends Activity { //extends AppCompatActivity
 
         }
     };
-
-
 
 
 }
