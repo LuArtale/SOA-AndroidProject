@@ -31,7 +31,7 @@ public class DialogActivity extends Activity {
 
 
         //se crea un objeto Bundle para poder recibir los parametros enviados por la activity Inicio
-        //al momeento de ejecutar stratActivity
+        //al momeento de ejecutar startActivity
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
         String texto= extras.getString("textoOrigen");
