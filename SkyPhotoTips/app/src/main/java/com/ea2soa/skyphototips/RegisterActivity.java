@@ -3,40 +3,76 @@ package com.ea2soa.skyphototips;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class RegisterActivity extends Activity {
 
-    private EditText inputTextUserR;
+    private EditText inputTextName;
+    private EditText inputTextLastname;
+    private EditText inputTextDni;
+
+    private EditText inputTextEmailR;
     private EditText inputTextPassR;
+
+    private EditText inputTextCommission;
+
     private Button buttonRegisterR;
+
+    private static final String URI_REGISTER_USER = "http://so-unlam.net.ar/api/api/register";
+
+    private EditText textResult;
+
+    public IntentFilter filtro;
+    private ReceptorOperacion receiver = new ReceptorOperacion();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        inputTextUserR=(EditText)findViewById(R.id.inputTextUserR);
-        inputTextPassR=(EditText)findViewById(R.id.inputTextPassR);
+        Log.i("LOG_REGISTER","OnCreate");
+
+        inputTextName = (EditText)findViewById(R.id.inputTextName);
+        inputTextLastname = (EditText)findViewById(R.id.inputTextLastname);
+        inputTextDni = (EditText)findViewById(R.id.inputTextDni);
+        inputTextEmailR = (EditText)findViewById(R.id.inputTextEmailR);
+        inputTextPassR = (EditText)findViewById(R.id.inputTextPassR);
+        inputTextCommission = (EditText)findViewById(R.id.inputTextCommission);
 
         buttonRegisterR = (Button) findViewById(R.id.buttonRegisterR);
 
-        buttonRegisterR.setOnClickListener(botonesListeners);
+        textResult = (EditText)findViewById(R.id.textResult);
+
+        //buttonRegisterR.setOnClickListener(botonesListeners);
+        buttonRegisterR.setOnClickListener(HandlerCmdRegistrar);
 
         Intent loginIntent=getIntent();
         /*Bundle extras=loginIntent.getExtras();
         String textUserPassSent=extras.getString("user");
         textUserPassSent+=extras.getString("pass");
         inputUserPassSent.setText(textUserPassSent);*/
+
+        configurarBroadcastReceiver();
+
+        Log.i("LOG_REGISTER","Finished setup");
     }
 
 
-    private View.OnClickListener botonesListeners = new View.OnClickListener()
+    /*private View.OnClickListener botonesListeners = new View.OnClickListener()
     {
         public void onClick(View v)
         {
@@ -55,5 +91,62 @@ public class RegisterActivity extends Activity {
                     Toast.makeText(getApplicationContext(),"Error en Listener de botones",Toast.LENGTH_LONG).show();
             }
         }
+    };*/
+
+    private void configurarBroadcastReceiver() {
+        filtro = new IntentFilter("com.ea2soa.intentservice.intent.action.RESPUESTA_OPERACION");
+        filtro.addCategory(Intent.CATEGORY_DEFAULT);
+        registerReceiver(receiver,filtro);
+    }
+
+
+    private View.OnClickListener HandlerCmdRegistrar = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            JSONObject obj = new JSONObject();
+            try {
+
+                obj.put("env","TEST");
+                obj.put("name",inputTextName.getText());
+                obj.put("lastname",inputTextLastname.getText());
+                obj.put("dni",inputTextDni.getText());
+                obj.put("email",inputTextEmailR.getText());
+                obj.put("password",inputTextPassR.getText());
+                obj.put("commission",inputTextCommission.getText());
+
+                Intent intentRegister=new Intent(RegisterActivity.this,ServicesHTTP_POST.class);
+
+                intentRegister.putExtra("uri",URI_REGISTER_USER);
+                intentRegister.putExtra("datosJSON",obj.toString());
+
+                Toast.makeText(getApplicationContext(),"Inicio registracion!",Toast.LENGTH_LONG).show();
+
+                startService(intentRegister);
+
+            } catch (Exception e){
+                Log.i("Error",e.toString());
+            }
+        }
     };
+
+
+    public class ReceptorOperacion extends BroadcastReceiver {
+
+        public void onReceive(Context context, Intent intent) {
+            try {
+
+                String datosJsonString = intent.getStringExtra("datosJSON");
+                JSONObject datosJSON = new JSONObject(datosJsonString);
+
+                Log.e("LOG_REGISTER","Datos JSON Main Thread: \n" + datosJsonString);
+
+                textResult.setText(datosJsonString);
+                Toast.makeText(getApplicationContext(),"Se recibio respuesta del server",Toast.LENGTH_LONG).show();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 }

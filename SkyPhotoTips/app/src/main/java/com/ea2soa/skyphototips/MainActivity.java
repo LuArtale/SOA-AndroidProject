@@ -117,21 +117,6 @@ public class MainActivity extends Activity {
         }
     };
 
-    private View.OnClickListener HandlerCmdRegistrar = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            JSONObject obj = new JSONObject();
-            try {
-
-                obj.put("env","TEST");
-
-            } catch (Exception e){
-                Log.i("Error",e.toString());
-            }
-        }
-    };
-
-
 
 
 }
