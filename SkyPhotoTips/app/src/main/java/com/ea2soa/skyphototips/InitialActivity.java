@@ -105,8 +105,6 @@ public class InitialActivity extends AppCompatActivity {
                 case R.id.buttonRegister:
                     if(internetConection()) {
                         intent=new Intent(InitialActivity.this,RegisterActivity.class);
-                        //intent.putExtra("user",inputTextUser.getText().toString());
-                        //intent.putExtra("pass",inputTextPass.getText().toString());
 
                         Log.i("LOG_MAIN:", "Pressed Register");
 

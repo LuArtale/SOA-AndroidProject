@@ -71,11 +71,6 @@ public class LoginActivity extends Activity {
 
                     Toast.makeText(getApplicationContext(),"Datos Invalidos",Toast.LENGTH_LONG).show();
 
-                    /*Intent goBackIntent;
-                    goBackIntent=new Intent(LoginActivity.this,InitialActivity.class);
-                    //.putExtra("user",requestLogin.getEmail());
-                    //goBackIntent.putExtra("errorlogin",response.errorBody().toString());
-                    startActivity(goBackIntent);*/
                     goBack();
                 }
 
@@ -104,16 +99,12 @@ public class LoginActivity extends Activity {
     protected void onPause() {
         Log.i("LOG_LOGIN","Ejecuto onPause");
         super.onPause();
-
-        //goBack();
     }
 
     @Override
     protected void onStop() {
         Log.i("LOG_LOGIN","Ejecuto onStop");
         super.onStop();
-
-        //goBack();
     }
 
 

@@ -39,15 +39,6 @@ public class RegisterActivity extends Activity {
 
     private Button buttonRegisterR;
 
-    //private static final String URI_REGISTER_USER = "http://so-unlam.net.ar/api/api/register";
-
-    //Solo para test://
-    private EditText textResult;
-    //---------------//
-
-    //public IntentFilter filtro;
-    //private ReceptorOperacion receiver = new ReceptorOperacion();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +56,7 @@ public class RegisterActivity extends Activity {
 
         buttonRegisterR = (Button) findViewById(R.id.buttonRegisterR);
 
-        textResult = (EditText)findViewById(R.id.textResult);
 
-        //buttonRegisterR.setOnClickListener(botonesListeners);
-        //buttonRegisterR.setOnClickListener(HandlerCmdRegistrar);
         buttonRegisterR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +64,7 @@ public class RegisterActivity extends Activity {
                 Log.i("LOG_REGISTER","Starting Register User Request");
 
                 RequestRegisterUser requestRegisterUser = new RequestRegisterUser();
-                requestRegisterUser.setEnv("TEST"); //puede ser TEST o PROD
+                requestRegisterUser.setEnv("PROD"); //puede ser TEST o PROD
                 requestRegisterUser.setName(inputTextName.getText().toString());
                 requestRegisterUser.setLastname(inputTextLastname.getText().toString());
                 requestRegisterUser.setDni(Long.parseLong(inputTextDni.getText().toString()));
@@ -101,7 +89,6 @@ public class RegisterActivity extends Activity {
                             resp += " - " + response.body().getToken();
                             resp += " - " + response.body().getToken_refresh();
 
-                            textResult.setText(resp);
                             Log.i("LOG_REGISTER","Respuesta: " + resp);
 
                             Intent loginIntent =new Intent(RegisterActivity.this,LoginActivity.class);
@@ -126,91 +113,7 @@ public class RegisterActivity extends Activity {
             }
         });
 
-        //configurarBroadcastReceiver();
-
         Log.i("LOG_REGISTER","Finished setup");
     }
 
-/*
-    private View.OnClickListener botonesListeners = new View.OnClickListener()
-    {
-        public void onClick(View v)
-        {
-            Intent intent;
-            switch (v.getId())
-            {
-                case R.id.buttonRegisterR:
-                    intent=new Intent(RegisterActivity.this,InitialActivity.class);
-                    //intent.putExtra("user",inputTextUser.getText().toString());
-                    //intent.putExtra("pass",inputTextPass.getText().toString());
-                    Toast.makeText(getApplicationContext(),"Registrado Exitosamente!",Toast.LENGTH_LONG).show();
-                    startActivity(intent);
-                    break;
-
-                default:
-                    Toast.makeText(getApplicationContext(),"Error en Listener de botones",Toast.LENGTH_LONG).show();
-            }
-        }
-    };
-*/
-    /*private void configurarBroadcastReceiver() {
-        Log.i("LOG_REGISTER","Configurando Broadcast Receiver");
-        filtro = new IntentFilter("com.ea2soa.skyphototips.intent.action.RESPUESTA_OPERACION");
-        filtro.addCategory(Intent.CATEGORY_DEFAULT);
-        registerReceiver(receiver,filtro);
-    }
-
-
-    private View.OnClickListener HandlerCmdRegistrar = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            JSONObject obj = new JSONObject();
-            try {
-
-                Log.i("LOG_REGISTER","Inicio Handler");
-
-                obj.put("env","TEST");
-                obj.put("name",inputTextName.getText().toString());
-                obj.put("lastname",inputTextLastname.getText().toString());
-                obj.put("dni",Integer.parseInt(inputTextDni.getText().toString()));
-                obj.put("email",inputTextEmailR.getText().toString());
-                obj.put("password",inputTextPassR.getText().toString());
-                obj.put("commission",Integer.parseInt(inputTextCommission.getText().toString()));
-
-                Intent intentRegister=new Intent(RegisterActivity.this,ServicesHTTP_POST.class);
-
-                intentRegister.putExtra("uri",URI_REGISTER_USER);
-                intentRegister.putExtra("datosJSON",obj.toString());
-
-                //Toast.makeText(getApplicationContext(),"Inicio registracion!",Toast.LENGTH_LONG).show();
-                Log.i("LOG_REGISTER","Inicio registracion!");
-
-                startService(intentRegister);
-
-            } catch (Exception e){
-                Log.i("Error",e.toString());
-            }
-        }
-    };
-
-
-    public class ReceptorOperacion extends BroadcastReceiver {
-
-        public void onReceive(Context context, Intent intent) {
-            try {
-
-                String datosJsonString = intent.getStringExtra("datosJSON");
-                JSONObject datosJSON = new JSONObject(datosJsonString);
-
-                Log.i("LOG_REGISTER","Datos JSON Main Thread: \n" + datosJsonString);
-
-                textResult.setText(datosJsonString);
-                Toast.makeText(getApplicationContext(),"Se recibio respuesta del server",Toast.LENGTH_LONG).show();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }*/
 }
