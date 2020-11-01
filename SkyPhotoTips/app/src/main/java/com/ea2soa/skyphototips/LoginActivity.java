@@ -5,13 +5,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ea2soa.skyphototips.dto.RequestLogin;
-import com.ea2soa.skyphototips.dto.RequestRegisterUser;
 import com.ea2soa.skyphototips.dto.ResponseLogin;
-import com.ea2soa.skyphototips.dto.ResponseRegisterUser;
 import com.ea2soa.skyphototips.services.ServiceSoa;
 
 import retrofit2.Call;
@@ -60,10 +57,13 @@ public class LoginActivity extends Activity {
                     Log.i("LOG_LOGIN","Token_Refresh: " + tokenRefresh);
 
                     Intent continueIntent;
-                    continueIntent=new Intent(LoginActivity.this,SensorsCheck.class);
+                    continueIntent=new Intent(LoginActivity.this, SensorsCheckActivity.class);
                     continueIntent.putExtra("user",requestLogin.getEmail());
                     continueIntent.putExtra("pass",requestLogin.getPassword());
                     continueIntent.putExtra("tokenRefresh",tokenRefresh);
+
+                    Toast.makeText(getApplicationContext(),"Bienvenido!",Toast.LENGTH_LONG).show();
+
                     startActivity(continueIntent);
                 }
                 else {
@@ -72,7 +72,7 @@ public class LoginActivity extends Activity {
                     Toast.makeText(getApplicationContext(),"Datos Invalidos",Toast.LENGTH_LONG).show();
 
                     /*Intent goBackIntent;
-                    goBackIntent=new Intent(LoginActivity.this,MainActivity.class);
+                    goBackIntent=new Intent(LoginActivity.this,InitialActivity.class);
                     //.putExtra("user",requestLogin.getEmail());
                     //goBackIntent.putExtra("errorlogin",response.errorBody().toString());
                     startActivity(goBackIntent);*/
@@ -96,7 +96,7 @@ public class LoginActivity extends Activity {
 
     public void goBack() {
         Intent goBackIntent;
-        goBackIntent=new Intent(LoginActivity.this,MainActivity.class);
+        goBackIntent=new Intent(LoginActivity.this, InitialActivity.class);
         startActivity(goBackIntent);
     }
 

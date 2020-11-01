@@ -28,7 +28,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RegisterActivity extends AppCompatActivity /*Activity*/ {
+public class RegisterActivity extends Activity {
 
     private EditText inputTextName;
     private EditText inputTextLastname;
@@ -140,7 +140,7 @@ public class RegisterActivity extends AppCompatActivity /*Activity*/ {
             switch (v.getId())
             {
                 case R.id.buttonRegisterR:
-                    intent=new Intent(RegisterActivity.this,MainActivity.class);
+                    intent=new Intent(RegisterActivity.this,InitialActivity.class);
                     //intent.putExtra("user",inputTextUser.getText().toString());
                     //intent.putExtra("pass",inputTextPass.getText().toString());
                     Toast.makeText(getApplicationContext(),"Registrado Exitosamente!",Toast.LENGTH_LONG).show();

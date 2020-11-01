@@ -19,12 +19,13 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
-public class SensorsCheck extends Activity implements SensorEventListener {
+public class SensorsCheckActivity extends Activity implements SensorEventListener {
 
     private SensorManager mSensorManager;
-    private TextView      acelerometro;
+    private TextView acelerometro;
     private TextView      giroscopo;
     private TextView      orientacion;
     private TextView      magnetic;
@@ -36,9 +37,10 @@ public class SensorsCheck extends Activity implements SensorEventListener {
     private TextView      giro;
     //private TextView      presion;
 
+    private Button buttonContinue;
+
     DecimalFormat         dosdecimales = new DecimalFormat("###.###");
 
-    /** Called when the activity is first created. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +48,7 @@ public class SensorsCheck extends Activity implements SensorEventListener {
 
         // Defino los botones
         //Button sensores = (Button) findViewById(R.id.listado);
-        Button limpia   = (Button) findViewById(R.id.limpia);
+        Button buttonContinue   = (Button) findViewById(R.id.buttonContinue);
 
         // Defino los TXT para representar los datos de los sensores
         acelerometro  = (TextView) findViewById(R.id.acelerometro);
@@ -72,20 +74,29 @@ public class SensorsCheck extends Activity implements SensorEventListener {
             {
 
                 Intent i = new Intent();
-                i.setClass(MainActivity.this, ListaSensoresActivity.class);
+                i.setClass(InitialActivity.this, ListaSensoresActivity.class);
 
                 startActivity(i);
             }
         });*/
 
         // Limpio el texto de la deteccion
-        limpia.setOnClickListener(new OnClickListener()
+        buttonContinue.setOnClickListener(new OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                //detecta.setText("");
-                //detecta.setBackgroundColor(Color.parseColor("#000000"));
+                Log.i("LOG_MAIN","Continue to Main");
+
+                Intent continueIntent;
+                continueIntent=new Intent(SensorsCheckActivity.this, MainActivity.class);
+                /*continueIntent.putExtra("user",requestLogin.getEmail());
+                continueIntent.putExtra("pass",requestLogin.getPassword());
+                continueIntent.putExtra("tokenRefresh",tokenRefresh);*/
+
+                //Toast.makeText(getApplicationContext(),"Bienvenido!",Toast.LENGTH_LONG).show();
+
+                startActivity(continueIntent);
             }
         });
     }
