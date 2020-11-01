@@ -29,8 +29,16 @@ public class ServicesHTTP_POST extends IntentService {
 
 
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
+    public void onCreate() {
+        super.onCreate();
+        Log.i("LOG_SERVICE","OnCreate Service");
+    }
+
+    //@Override
+    protected void onHandleIntent(Intent intent) {
         try {
+            Log.i("LOG_SERVICE","Inicio onHandleIntent");
+
             String uri = intent.getExtras().getString("uri");
             JSONObject datosJSON = new JSONObject(intent.getExtras().getString("datosJSON"));
 
@@ -55,9 +63,10 @@ public class ServicesHTTP_POST extends IntentService {
             return;
         }
 
-        Intent intentRegister = new Intent("com.ea2soa.intentservice.intent.action.RESPUESTA_OPERACION");
+        Intent intentRegister = new Intent("com.ea2soa.skyphototips.intent.action.RESPUESTA_OPERACION");
         intentRegister.putExtra("datosJSON", result);
         sendBroadcast(intentRegister);
+        Log.i("LOG_SERVICE","Post ejecutado");
     }
 
 

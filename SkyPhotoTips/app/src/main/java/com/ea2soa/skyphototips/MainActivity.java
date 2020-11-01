@@ -88,7 +88,8 @@ public class MainActivity extends Activity {
                 //Si se ocurrio un evento en el boton OK
                 case R.id.buttonLogin:
                     //se genera un Intent para poder lanzar la activity principal
-                    intent=new Intent(MainActivity.this,LoginActivity.class);
+                    //intent=new Intent(MainActivity.this,LoginActivity.class);
+                    intent=new Intent(MainActivity.this,SensorsCheck.class);
 
                     //Se le agrega al intent los parametros que se le quieren pasar a la activyt principal
                     //cuando se lanzado

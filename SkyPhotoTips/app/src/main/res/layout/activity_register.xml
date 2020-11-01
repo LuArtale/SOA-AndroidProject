@@ -70,35 +70,18 @@
         app:layout_constraintTop_toBottomOf="@+id/inputTextEmailR" />
 
     <EditText
-        android:id="@+id/inputTextCommission"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="224dp"
-        android:ems="10"
-        android:hint="Usuario"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputTextPassR" />
-
-    <EditText
         android:id="@+id/inputTextLastname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="98dp"
         android:layout_marginTop="7dp"
         android:layout_marginEnd="100dp"
-        android:layout_marginBottom="436dp"
+        android:layout_marginBottom="4dp"
         android:ems="10"
         android:hint="Apellido"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/inputTextDni"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputTextName" />
 
@@ -107,15 +90,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
-        android:layout_marginTop="39dp"
         android:layout_marginEnd="163dp"
         android:layout_marginBottom="136dp"
         android:text="Registrarse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.461"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputTextCommission" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/inputTextDni"
@@ -147,5 +128,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonRegisterR" />
+
+    <EditText
+        android:id="@+id/inputTextCommission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="99dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="99dp"
+        android:layout_marginBottom="40dp"
+        android:ems="10"
+        android:hint="Comision"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/buttonRegisterR"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputTextPassR" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

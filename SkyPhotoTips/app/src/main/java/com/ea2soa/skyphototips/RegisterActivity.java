@@ -23,17 +23,17 @@ public class RegisterActivity extends Activity {
     private EditText inputTextName;
     private EditText inputTextLastname;
     private EditText inputTextDni;
-
     private EditText inputTextEmailR;
     private EditText inputTextPassR;
-
     private EditText inputTextCommission;
 
     private Button buttonRegisterR;
 
     private static final String URI_REGISTER_USER = "http://so-unlam.net.ar/api/api/register";
 
+    //Solo para test://
     private EditText textResult;
+    //---------------//
 
     public IntentFilter filtro;
     private ReceptorOperacion receiver = new ReceptorOperacion();
@@ -60,7 +60,7 @@ public class RegisterActivity extends Activity {
         //buttonRegisterR.setOnClickListener(botonesListeners);
         buttonRegisterR.setOnClickListener(HandlerCmdRegistrar);
 
-        Intent loginIntent=getIntent();
+        //Intent loginIntent=getIntent();
         /*Bundle extras=loginIntent.getExtras();
         String textUserPassSent=extras.getString("user");
         textUserPassSent+=extras.getString("pass");
@@ -94,7 +94,8 @@ public class RegisterActivity extends Activity {
     };*/
 
     private void configurarBroadcastReceiver() {
-        filtro = new IntentFilter("com.ea2soa.intentservice.intent.action.RESPUESTA_OPERACION");
+        Log.i("LOG_REGISTER","Configurando Broadcast Receiver");
+        filtro = new IntentFilter("com.ea2soa.skyphototips.intent.action.RESPUESTA_OPERACION");
         filtro.addCategory(Intent.CATEGORY_DEFAULT);
         registerReceiver(receiver,filtro);
     }
@@ -106,20 +107,23 @@ public class RegisterActivity extends Activity {
             JSONObject obj = new JSONObject();
             try {
 
+                Log.i("LOG_REGISTER","Inicio Handler");
+
                 obj.put("env","TEST");
-                obj.put("name",inputTextName.getText());
-                obj.put("lastname",inputTextLastname.getText());
-                obj.put("dni",inputTextDni.getText());
-                obj.put("email",inputTextEmailR.getText());
-                obj.put("password",inputTextPassR.getText());
-                obj.put("commission",inputTextCommission.getText());
+                obj.put("name",inputTextName.getText().toString());
+                obj.put("lastname",inputTextLastname.getText().toString());
+                obj.put("dni",Integer.parseInt(inputTextDni.getText().toString()));
+                obj.put("email",inputTextEmailR.getText().toString());
+                obj.put("password",inputTextPassR.getText().toString());
+                obj.put("commission",Integer.parseInt(inputTextCommission.getText().toString()));
 
                 Intent intentRegister=new Intent(RegisterActivity.this,ServicesHTTP_POST.class);
 
                 intentRegister.putExtra("uri",URI_REGISTER_USER);
                 intentRegister.putExtra("datosJSON",obj.toString());
 
-                Toast.makeText(getApplicationContext(),"Inicio registracion!",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"Inicio registracion!",Toast.LENGTH_LONG).show();
+                Log.i("LOG_REGISTER","Inicio registracion!");
 
                 startService(intentRegister);
 
@@ -138,7 +142,7 @@ public class RegisterActivity extends Activity {
                 String datosJsonString = intent.getStringExtra("datosJSON");
                 JSONObject datosJSON = new JSONObject(datosJsonString);
 
-                Log.e("LOG_REGISTER","Datos JSON Main Thread: \n" + datosJsonString);
+                Log.i("LOG_REGISTER","Datos JSON Main Thread: \n" + datosJsonString);
 
                 textResult.setText(datosJsonString);
                 Toast.makeText(getApplicationContext(),"Se recibio respuesta del server",Toast.LENGTH_LONG).show();
