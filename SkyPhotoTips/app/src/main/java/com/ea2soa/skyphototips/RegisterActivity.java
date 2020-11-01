@@ -76,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity /*Activity*/ {
                 Log.i("LOG_REGISTER","Starting Register User Request");
 
                 RequestRegisterUser requestRegisterUser = new RequestRegisterUser();
-                requestRegisterUser.setEnv("TEST");
+                requestRegisterUser.setEnv("TEST"); //puede ser TEST o PROD
                 requestRegisterUser.setName(inputTextName.getText().toString());
                 requestRegisterUser.setLastname(inputTextLastname.getText().toString());
                 requestRegisterUser.setDni(Long.parseLong(inputTextDni.getText().toString()));
@@ -102,10 +102,17 @@ public class RegisterActivity extends AppCompatActivity /*Activity*/ {
                             resp += " - " + response.body().getToken_refresh();
 
                             textResult.setText(resp);
-                            Log.i("LOG_REGISTER","Token: " + response.body().getToken());
+                            Log.i("LOG_REGISTER","Respuesta: " + resp);
+
+                            Intent loginIntent =new Intent(RegisterActivity.this,LoginActivity.class);
+                            loginIntent.putExtra("user",inputTextEmailR.getText().toString());
+                            loginIntent.putExtra("pass",inputTextPassR.getText().toString());
+                            startActivity(loginIntent);
                         }
-                        else
+                        else {
                             Log.e("LOG_REGISTER",response.errorBody().toString());
+                            Toast.makeText(getApplicationContext(),"Datos Invalidos",Toast.LENGTH_LONG).show();
+                        }
 
                         Log.i("LOG_REGISTER","Fin Mensaje");
                     }
@@ -113,6 +120,7 @@ public class RegisterActivity extends AppCompatActivity /*Activity*/ {
                     @Override
                     public void onFailure(Call<ResponseRegisterUser> call, Throwable t) {
                         Log.e("LOG_REGISTER",t.getMessage());
+                        Toast.makeText(getApplicationContext(),"Error al registrar",Toast.LENGTH_LONG).show();
                     }
                 });
             }

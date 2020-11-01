@@ -1,7 +1,10 @@
 package com.ea2soa.skyphototips;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +20,8 @@ public class MainActivity extends Activity {
     private EditText inputTextPass;
     private Button buttonLogin;
     private Button buttonRegister;
+
+    private Boolean internetConection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,9 @@ public class MainActivity extends Activity {
     protected void onResume() {
         Log.i("Ejecuto","Ejecuto OnResume");
         super.onResume();
+
+        if(!conexionAInternet())
+            Toast.makeText(getApplicationContext(),"Se necesita conexion a internet...",Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -72,42 +80,41 @@ public class MainActivity extends Activity {
     }
 
 
-
-
-    //Metodo que actua como Listener de los eventos que ocurren en los componentes graficos de la activty
     private View.OnClickListener botonesListeners = new View.OnClickListener()
     {
 
         public void onClick(View v)
         {
             Intent intent;
-
-            //Se determina que componente genero un evento
             switch (v.getId())
             {
-                //Si se ocurrio un evento en el boton OK
                 case R.id.buttonLogin:
-                    //se genera un Intent para poder lanzar la activity principal
-                    //intent=new Intent(MainActivity.this,LoginActivity.class);
-                    intent=new Intent(MainActivity.this,SensorsCheck.class);
 
-                    //Se le agrega al intent los parametros que se le quieren pasar a la activyt principal
-                    //cuando se lanzado
-                    intent.putExtra("user",inputTextUser.getText().toString());
-                    intent.putExtra("pass",inputTextPass.getText().toString());
+                    if(conexionAInternet()) {
+                        intent=new Intent(MainActivity.this,LoginActivity.class);
+                        intent.putExtra("user",inputTextUser.getText().toString());
+                        intent.putExtra("pass",inputTextPass.getText().toString());
 
-                    //se inicia la activity principal
-                    startActivity(intent);
+                        startActivity(intent);
 
-                    Toast.makeText(getApplicationContext(),"Te has logueado! Ponele...",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Bienvenido!",Toast.LENGTH_LONG).show();
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(),"Se necesita conexion a internet...",Toast.LENGTH_LONG).show();
 
                     break;
 
                 case R.id.buttonRegister:
-                    intent=new Intent(MainActivity.this,RegisterActivity.class);
-                    //intent.putExtra("user",inputTextUser.getText().toString());
-                    //intent.putExtra("pass",inputTextPass.getText().toString());
-                    startActivity(intent);
+                    if(conexionAInternet()) {
+                        intent=new Intent(MainActivity.this,RegisterActivity.class);
+                        //intent.putExtra("user",inputTextUser.getText().toString());
+                        //intent.putExtra("pass",inputTextPass.getText().toString());
+
+                        startActivity(intent);
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(),"Se necesita conexion a internet...",Toast.LENGTH_LONG).show();
+
                     break;
 
                 default:
@@ -117,6 +124,17 @@ public class MainActivity extends Activity {
 
         }
     };
+
+    private boolean conexionAInternet() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if(networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 
 

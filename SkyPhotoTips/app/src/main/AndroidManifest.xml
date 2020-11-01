@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ea2soa.skyphototips">
     
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -23,11 +24,11 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".RegisterActivity$ReceptorOperacion">
+        <!-- <receiver android:name=".RegisterActivity$ReceptorOperacion">
             <intent-filter>
                 <action android:name="com.ea2soa.skyphototips.intent.action.RESPUESTA_OPERACION" />
             </intent-filter>
-        </receiver>
+        </receiver> -->
     </application>
 
 </manifest>
