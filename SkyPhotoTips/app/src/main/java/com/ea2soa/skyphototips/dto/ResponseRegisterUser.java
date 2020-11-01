@@ -1,6 +1,6 @@
-package com.ea2soa.skyphototips;
+package com.ea2soa.skyphototips.dto;
 
-public class SoaResponse {
+public class ResponseRegisterUser {
 
     private Boolean success;
     private String env;
@@ -8,7 +8,7 @@ public class SoaResponse {
     private String token_refresh;
 
 
-    
+
     public Boolean getSuccess() {
         return success;
     }

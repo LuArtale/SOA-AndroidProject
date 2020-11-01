@@ -1,8 +1,8 @@
-package com.ea2soa.skyphototips;
+package com.ea2soa.skyphototips.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class SoaRequest {
+public class RequestRegisterUser {
 
     @SerializedName("env")
     private String env;

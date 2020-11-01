@@ -15,10 +15,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ea2soa.skyphototips.dto.RequestRegisterUser;
+import com.ea2soa.skyphototips.dto.ResponseRegisterUser;
+import com.ea2soa.skyphototips.services.ServiceSoa;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class RegisterActivity extends Activity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class RegisterActivity extends AppCompatActivity /*Activity*/ {
 
     private EditText inputTextName;
     private EditText inputTextLastname;
@@ -29,14 +39,14 @@ public class RegisterActivity extends Activity {
 
     private Button buttonRegisterR;
 
-    private static final String URI_REGISTER_USER = "http://so-unlam.net.ar/api/api/register";
+    //private static final String URI_REGISTER_USER = "http://so-unlam.net.ar/api/api/register";
 
     //Solo para test://
     private EditText textResult;
     //---------------//
 
-    public IntentFilter filtro;
-    private ReceptorOperacion receiver = new ReceptorOperacion();
+    //public IntentFilter filtro;
+    //private ReceptorOperacion receiver = new ReceptorOperacion();
 
 
     @Override
@@ -58,21 +68,63 @@ public class RegisterActivity extends Activity {
         textResult = (EditText)findViewById(R.id.textResult);
 
         //buttonRegisterR.setOnClickListener(botonesListeners);
-        buttonRegisterR.setOnClickListener(HandlerCmdRegistrar);
+        //buttonRegisterR.setOnClickListener(HandlerCmdRegistrar);
+        buttonRegisterR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        //Intent loginIntent=getIntent();
-        /*Bundle extras=loginIntent.getExtras();
-        String textUserPassSent=extras.getString("user");
-        textUserPassSent+=extras.getString("pass");
-        inputUserPassSent.setText(textUserPassSent);*/
+                Log.i("LOG_REGISTER","Starting Register User Request");
 
-        configurarBroadcastReceiver();
+                RequestRegisterUser requestRegisterUser = new RequestRegisterUser();
+                requestRegisterUser.setEnv("TEST");
+                requestRegisterUser.setName(inputTextName.getText().toString());
+                requestRegisterUser.setLastname(inputTextLastname.getText().toString());
+                requestRegisterUser.setDni(Long.parseLong(inputTextDni.getText().toString()));
+                requestRegisterUser.setEmail(inputTextEmailR.getText().toString());
+                requestRegisterUser.setPassword(inputTextPassR.getText().toString());
+                requestRegisterUser.setCommission(Long.parseLong(inputTextCommission.getText().toString()));
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .baseUrl(getString(R.string.retrofit_service))
+                        .build();
+
+                ServiceSoa serviceSoa = retrofit.create(ServiceSoa.class);
+
+                Call<ResponseRegisterUser> call = serviceSoa.respRegisterUser(requestRegisterUser);
+                call.enqueue(new Callback<ResponseRegisterUser>() {
+                    @Override
+                    public void onResponse(Call<ResponseRegisterUser> call, Response<ResponseRegisterUser> response) {
+
+                        if(response.isSuccessful()){
+                            String resp = response.body().getEnv();
+                            resp += " - " + response.body().getToken();
+                            resp += " - " + response.body().getToken_refresh();
+
+                            textResult.setText(resp);
+                            Log.i("LOG_REGISTER","Token: " + response.body().getToken());
+                        }
+                        else
+                            Log.e("LOG_REGISTER",response.errorBody().toString());
+
+                        Log.i("LOG_REGISTER","Fin Mensaje");
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseRegisterUser> call, Throwable t) {
+                        Log.e("LOG_REGISTER",t.getMessage());
+                    }
+                });
+            }
+        });
+
+        //configurarBroadcastReceiver();
 
         Log.i("LOG_REGISTER","Finished setup");
     }
 
-
-    /*private View.OnClickListener botonesListeners = new View.OnClickListener()
+/*
+    private View.OnClickListener botonesListeners = new View.OnClickListener()
     {
         public void onClick(View v)
         {
@@ -91,9 +143,9 @@ public class RegisterActivity extends Activity {
                     Toast.makeText(getApplicationContext(),"Error en Listener de botones",Toast.LENGTH_LONG).show();
             }
         }
-    };*/
-
-    private void configurarBroadcastReceiver() {
+    };
+*/
+    /*private void configurarBroadcastReceiver() {
         Log.i("LOG_REGISTER","Configurando Broadcast Receiver");
         filtro = new IntentFilter("com.ea2soa.skyphototips.intent.action.RESPUESTA_OPERACION");
         filtro.addCategory(Intent.CATEGORY_DEFAULT);
@@ -152,5 +204,5 @@ public class RegisterActivity extends Activity {
             }
         }
 
-    }
+    }*/
 }
