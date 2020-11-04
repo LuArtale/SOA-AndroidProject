@@ -9,7 +9,9 @@ import android.widget.Toast;
 
 import com.ea2soa.skyphototips.dto.Event;
 import com.ea2soa.skyphototips.dto.RequestLogin;
+import com.ea2soa.skyphototips.dto.RequestRegisterEvent;
 import com.ea2soa.skyphototips.dto.ResponseLogin;
+import com.ea2soa.skyphototips.dto.ResponseRegisterEvent;
 import com.ea2soa.skyphototips.services.ServiceSoa;
 
 import retrofit2.Call;
@@ -32,8 +34,6 @@ public class LoginActivity extends Activity {
         Bundle extras=loginIntent.getExtras();
 
         executeLogin(extras);
-
-
 
     }
 
@@ -122,10 +122,11 @@ public class LoginActivity extends Activity {
     public void executeRegisterEvent(String env, String type_events, String desc, String token) {
 
         Log.i("LOG_LOGIN","Registering Login");
-/*
-        RequestLogin requestLogin = new RequestLogin();
-        requestLogin.setEmail(extras.getString("user"));
-        requestLogin.setPassword(extras.getString("pass"));
+
+        RequestRegisterEvent requestRegisterEvent = new RequestRegisterEvent();
+        requestRegisterEvent.setEnv(env);
+        requestRegisterEvent.setType_events(type_events);
+        requestRegisterEvent.setDescription(desc);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
@@ -134,17 +135,23 @@ public class LoginActivity extends Activity {
 
         ServiceSoa serviceSoa = retrofit.create(ServiceSoa.class);
 
-        Call<ResponseLogin> call = serviceSoa.respLogin(requestLogin);
-        call.enqueue(new Callback<ResponseLogin>() {
+        Call<ResponseRegisterEvent> call = serviceSoa.respRegisterEvent(token, requestRegisterEvent);
+        call.enqueue(new Callback<ResponseRegisterEvent>() {
             @Override
-            public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
+            public void onResponse(Call<ResponseRegisterEvent> call, Response<ResponseRegisterEvent> response) {
 
                 if(response.isSuccessful()){
-                    token = response.body().getToken();
-                    tokenRefresh = response.body().getToken_refresh();
+                    String envResp = response.body().getEnv();
+                    Event eventResp = response.body().getEvent();
 
-                    Log.i("LOG_LOGIN","Token: " + token);
-                    Log.i("LOG_LOGIN","Token_Refresh: " + tokenRefresh);
+                    Log.i("LOG_LOGIN","Register Event - enviroment: " + envResp);
+                    Log.i("LOG_LOGIN","Register Event - event: " + eventResp.toString());
+
+                    /*
+
+                    if(envResp.equals("PROD")) {
+
+                    }
 
                     Intent continueIntent;
                     continueIntent=new Intent(LoginActivity.this, SensorsCheckActivity.class);
@@ -155,27 +162,31 @@ public class LoginActivity extends Activity {
                     Toast.makeText(getApplicationContext(),"Bienvenido!",Toast.LENGTH_LONG).show();
 
                     startActivity(continueIntent);
+
+                    */
                 }
                 else {
                     Log.e("LOG_LOGIN",response.errorBody().toString());
 
-                    Toast.makeText(getApplicationContext(),"Datos Invalidos",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Error de datos en Registro Login",Toast.LENGTH_LONG).show();
+                    Log.e("LOG_LOGIN","Error de datos en Registro Login");
 
-                    goBack();
+                    //goBack();
                 }
 
                 Log.i("LOG_LOGIN","Fin Mensaje");
             }
 
             @Override
-            public void onFailure(Call<ResponseLogin> call, Throwable t) {
+            public void onFailure(Call<ResponseRegisterEvent> call, Throwable t) {
                 Log.e("LOG_LOGIN",t.getMessage());
-                Toast.makeText(getApplicationContext(),"Error al iniciar sesion",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Error al registrar evento Login",Toast.LENGTH_LONG).show();
+                Log.e("LOG_LOGIN","Error al registrar evento Login");
 
-                goBack();
+                //goBack();
             }
         });
-*/
+
     }
 
 

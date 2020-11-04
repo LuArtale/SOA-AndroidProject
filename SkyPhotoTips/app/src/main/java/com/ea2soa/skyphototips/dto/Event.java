@@ -7,6 +7,15 @@ public class Event {
     private String description;
     private Long id;
 
+    @Override
+    public String toString() {
+        return "Event{" +
+                "type_events='" + type_events + '\'' +
+                ", dni=" + dni +
+                ", description='" + description + '\'' +
+                ", id=" + id +
+                '}';
+    }
 
     public String getType_events() {
         return type_events;
