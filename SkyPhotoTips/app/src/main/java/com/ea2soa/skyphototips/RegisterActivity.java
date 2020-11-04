@@ -64,7 +64,7 @@ public class RegisterActivity extends Activity {
                 Log.i("LOG_REGISTER","Starting Register User Request");
 
                 RequestRegisterUser requestRegisterUser = new RequestRegisterUser();
-                requestRegisterUser.setEnv("PROD"); //puede ser TEST o PROD
+                requestRegisterUser.setEnv("TEST"); //puede ser TEST o PROD
                 requestRegisterUser.setName(inputTextName.getText().toString());
                 requestRegisterUser.setLastname(inputTextLastname.getText().toString());
                 requestRegisterUser.setDni(Long.parseLong(inputTextDni.getText().toString()));

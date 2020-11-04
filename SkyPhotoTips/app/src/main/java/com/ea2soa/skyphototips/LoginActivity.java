@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.ea2soa.skyphototips.dto.Event;
 import com.ea2soa.skyphototips.dto.RequestLogin;
 import com.ea2soa.skyphototips.dto.ResponseLogin;
 import com.ea2soa.skyphototips.services.ServiceSoa;
@@ -30,9 +31,98 @@ public class LoginActivity extends Activity {
         Intent loginIntent=getIntent();
         Bundle extras=loginIntent.getExtras();
 
-        //LLAMAR A API PARA LOGUEO
+        executeLogin(extras);
+
+
+
+    }
+
+    public void goBack() {
+        Intent goBackIntent;
+        goBackIntent=new Intent(LoginActivity.this, InitialActivity.class);
+        startActivity(goBackIntent);
+    }
+
+    @Override
+    protected void onPause() {
+        Log.i("LOG_LOGIN","Ejecuto onPause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.i("LOG_LOGIN","Ejecuto onStop");
+        super.onStop();
+    }
+
+
+    public void executeLogin(Bundle extras) {
+
         Log.i("LOG_LOGIN","Starting Login");
 
+        //LLAMAR A API PARA LOGUEO
+        RequestLogin requestLogin = new RequestLogin();
+        requestLogin.setEmail(extras.getString("user"));
+        requestLogin.setPassword(extras.getString("pass"));
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(getString(R.string.retrofit_service))
+                .build();
+
+        ServiceSoa serviceSoa = retrofit.create(ServiceSoa.class);
+
+        Call<ResponseLogin> call = serviceSoa.respLogin(requestLogin);
+        call.enqueue(new Callback<ResponseLogin>() {
+            @Override
+            public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
+
+                if(response.isSuccessful()){
+                    token = response.body().getToken();
+                    tokenRefresh = response.body().getToken_refresh();
+
+                    Log.i("LOG_LOGIN","Token: " + token);
+                    Log.i("LOG_LOGIN","Token_Refresh: " + tokenRefresh);
+
+                    Intent continueIntent;
+                    continueIntent=new Intent(LoginActivity.this, SensorsCheckActivity.class);
+                    continueIntent.putExtra("user",requestLogin.getEmail());
+                    continueIntent.putExtra("pass",requestLogin.getPassword());
+                    continueIntent.putExtra("tokenRefresh",tokenRefresh);
+
+                    //REGISTRAR EVENTO
+                    executeRegisterEvent(getString(R.string.enviroment), "login", "El usuario " + requestLogin.getEmail() + " inicio sesion.", token);
+
+                    Toast.makeText(getApplicationContext(),"Bienvenido!",Toast.LENGTH_LONG).show();
+
+                    startActivity(continueIntent);
+                }
+                else {
+                    Log.e("LOG_LOGIN",response.errorBody().toString());
+
+                    Toast.makeText(getApplicationContext(),"Datos Invalidos",Toast.LENGTH_LONG).show();
+
+                    goBack();
+                }
+
+                Log.i("LOG_LOGIN","Fin Mensaje");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseLogin> call, Throwable t) {
+                Log.e("LOG_LOGIN",t.getMessage());
+                Toast.makeText(getApplicationContext(),"Error al iniciar sesion",Toast.LENGTH_LONG).show();
+
+                goBack();
+            }
+        });
+
+    }
+
+    public void executeRegisterEvent(String env, String type_events, String desc, String token) {
+
+        Log.i("LOG_LOGIN","Registering Login");
+/*
         RequestLogin requestLogin = new RequestLogin();
         requestLogin.setEmail(extras.getString("user"));
         requestLogin.setPassword(extras.getString("pass"));
@@ -85,26 +175,7 @@ public class LoginActivity extends Activity {
                 goBack();
             }
         });
-
-
-    }
-
-    public void goBack() {
-        Intent goBackIntent;
-        goBackIntent=new Intent(LoginActivity.this, InitialActivity.class);
-        startActivity(goBackIntent);
-    }
-
-    @Override
-    protected void onPause() {
-        Log.i("LOG_LOGIN","Ejecuto onPause");
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        Log.i("LOG_LOGIN","Ejecuto onStop");
-        super.onStop();
+*/
     }
 
 
