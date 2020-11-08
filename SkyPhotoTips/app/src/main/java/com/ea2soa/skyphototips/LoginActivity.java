@@ -34,13 +34,13 @@ public class LoginActivity extends Activity {
         Bundle extras=loginIntent.getExtras();
 
         executeLogin(extras);
-
     }
 
     public void goBack() {
         Intent goBackIntent;
         goBackIntent=new Intent(LoginActivity.this, InitialActivity.class);
         startActivity(goBackIntent);
+        finish();
     }
 
     @Override
@@ -96,6 +96,8 @@ public class LoginActivity extends Activity {
                     Toast.makeText(getApplicationContext(),"Bienvenido!",Toast.LENGTH_LONG).show();
 
                     startActivity(continueIntent);
+
+                    finish();
                 }
                 else {
                     Log.e("LOG_LOGIN",response.errorBody().toString());

@@ -94,7 +94,10 @@ public class RegisterActivity extends Activity {
                             Intent loginIntent =new Intent(RegisterActivity.this,LoginActivity.class);
                             loginIntent.putExtra("user",inputTextEmailR.getText().toString());
                             loginIntent.putExtra("pass",inputTextPassR.getText().toString());
+
                             startActivity(loginIntent);
+
+                            finish();
                         }
                         else {
                             Log.e("LOG_REGISTER",response.errorBody().toString());
@@ -113,7 +116,7 @@ public class RegisterActivity extends Activity {
             }
         });
 
-        Log.i("LOG_REGISTER","Finished setup");
+        Log.i("LOG_REGISTER","Register User Finished");
     }
 
 }

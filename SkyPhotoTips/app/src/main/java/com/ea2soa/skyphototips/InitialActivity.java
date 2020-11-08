@@ -26,7 +26,7 @@ public class InitialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial);
 
-        Log.i("LOG_MAIN:", "Ejecuto onCreate");
+        Log.i("LOG_INITIAL:", "Ejecuto onCreate");
 
         inputTextUser=(EditText)findViewById(R.id.inputTextUser);
         inputTextPass=(EditText)findViewById(R.id.inputTextPass);
@@ -36,17 +36,28 @@ public class InitialActivity extends AppCompatActivity {
 
         buttonLogin.setOnClickListener(botonesListeners);
         buttonRegister.setOnClickListener(botonesListeners);
+
+        if(getString(R.string.enviroment).equals("TEST")) {
+            //inputTextUser.setText(getString(R.string.userLu));
+            //inputTextPass.setText(getString(R.string.passLu));
+            Intent continueIntent;
+            continueIntent=new Intent(InitialActivity.this, SensorsCheckActivity.class);
+            continueIntent.putExtra("user",getString(R.string.userLu));
+            continueIntent.putExtra("pass",getString(R.string.passLu));
+            continueIntent.putExtra("tokenRefresh","modoTEST");
+            startActivity(continueIntent);
+        }
     }
 
     @Override
     protected void onStart() {
-        Log.i("LOG_MAIN:", "Ejecuto OnStart");
+        Log.i("LOG_INITIAL:", "Ejecuto OnStart");
         super.onStart();
     }
 
     @Override
     protected void onResume() {
-        Log.i("LOG_MAIN:", "Ejecuto OnResume");
+        Log.i("LOG_INITIAL:", "Ejecuto OnResume");
         super.onResume();
 
         if(!internetConection())
@@ -55,25 +66,25 @@ public class InitialActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        Log.i("LOG_MAIN:", "Ejecuto OnPause");
+        Log.i("LOG_INITIAL:", "Ejecuto OnPause");
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        Log.i("LOG_MAIN:", "Ejecuto OnStop");
+        Log.i("LOG_INITIAL:", "Ejecuto OnStop");
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        Log.i("LOG_MAIN:", "Ejecuto OnDestroy");
+        Log.i("LOG_INITIAL:", "Ejecuto OnDestroy");
         super.onDestroy();
     }
 
     @Override
     protected void onRestart() {
-        Log.i("LOG_MAIN:", "Ejecuto OnRestart");
+        Log.i("LOG_INITIAL:", "Ejecuto OnRestart");
         super.onRestart();
     }
 
@@ -93,7 +104,7 @@ public class InitialActivity extends AppCompatActivity {
                         intent.putExtra("user",inputTextUser.getText().toString());
                         intent.putExtra("pass",inputTextPass.getText().toString());
 
-                        Log.i("LOG_MAIN:", "Pressed Login");
+                        Log.i("LOG_INITIAL:", "Pressed Login");
 
                         startActivity(intent);
                     }
@@ -106,7 +117,7 @@ public class InitialActivity extends AppCompatActivity {
                     if(internetConection()) {
                         intent=new Intent(InitialActivity.this,RegisterActivity.class);
 
-                        Log.i("LOG_MAIN:", "Pressed Register");
+                        Log.i("LOG_INITIAL:", "Pressed Register");
 
                         startActivity(intent);
                     }
