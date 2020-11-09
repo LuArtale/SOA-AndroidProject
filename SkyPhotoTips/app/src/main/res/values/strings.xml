@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Sky Photo Tips</string>
     <string name="retrofit_service">http://so-unlam.net.ar/api/</string>
-    <string name="enviroment">TEST</string> <!-- PROD / TEST -->
+    <string name="enviroment">PROD</string> <!-- PROD / TEST -->
     <string name="saved_time_weather">saved_time_weather</string>
     <string name="saved_last_weather">saved_last_weather</string>
     <string name="userLu">lartale@alumno.unlam.edu.ar</string>

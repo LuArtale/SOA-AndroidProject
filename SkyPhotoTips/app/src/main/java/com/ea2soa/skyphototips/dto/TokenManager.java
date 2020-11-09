@@ -57,8 +57,8 @@ public class TokenManager {
     public void executeRegisterEvent(String env, String type_events, String desc) {
 
         Log.i("LOG_TOKEN_MANAGER","Registering " + type_events);
-        Log.i("LOG_LOGIN","Token: " + readToken());
-        Log.i("LOG_LOGIN","Token_Refresh: " + readTokenRefresh());
+        Log.i("LOG_TOKEN_MANAGER","Token: " + readToken());
+        Log.i("LOG_TOKEN_MANAGER","Token_Refresh: " + readTokenRefresh());
 
         RequestRegisterEvent requestRegisterEvent = new RequestRegisterEvent();
         requestRegisterEvent.setEnv(env);
@@ -72,7 +72,7 @@ public class TokenManager {
 
         ServiceSoa serviceSoa = retrofit.create(ServiceSoa.class);
 
-        Call<ResponseRegisterEvent> call = serviceSoa.respRegisterEvent(readToken(), requestRegisterEvent);
+        Call<ResponseRegisterEvent> call = serviceSoa.respRegisterEvent("Bearer " + readToken(), requestRegisterEvent);
         if(readToken().equals("Sin Datos"))
             Log.e("LOG_TOKEN_MANAGER","Register Event: NO SE ENCONTRARON DATOS DEL TOKEN");
         call.enqueue(new Callback<ResponseRegisterEvent>() {

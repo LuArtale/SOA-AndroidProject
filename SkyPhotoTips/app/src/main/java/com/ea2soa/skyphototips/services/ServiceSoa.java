@@ -23,9 +23,9 @@ public interface ServiceSoa {
     Call<ResponseLogin> respLogin(@Body RequestLogin reqLogin);
 
     @PUT("api/refresh")
-    Call<ResponseRefreshToken> respRefreshToken(@Header("authorization") String token);
+    Call<ResponseRefreshToken> respRefreshToken(@Header("Authorization") String token);
 
     @POST("api/event")
-    Call<ResponseRegisterEvent> respRegisterEvent(@Header("authorization") String token, @Body RequestRegisterEvent reqRegisterEvent);
+    Call<ResponseRegisterEvent> respRegisterEvent(@Header("Authorization") String token, @Body RequestRegisterEvent reqRegisterEvent);
 
 }
