@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -61,62 +63,84 @@ public class RegisterActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                Log.i("LOG_REGISTER","Starting Register User Request");
+                if(internetConection()) {
 
-                RequestRegisterUser requestRegisterUser = new RequestRegisterUser();
-                requestRegisterUser.setEnv(getString(R.string.enviroment)); //puede ser TEST o PROD
-                requestRegisterUser.setName(inputTextName.getText().toString());
-                requestRegisterUser.setLastname(inputTextLastname.getText().toString());
-                requestRegisterUser.setDni(Long.parseLong(inputTextDni.getText().toString()));
-                requestRegisterUser.setEmail(inputTextEmailR.getText().toString());
-                requestRegisterUser.setPassword(inputTextPassR.getText().toString());
-                requestRegisterUser.setCommission(Long.parseLong(inputTextCommission.getText().toString()));
+                    Log.i("LOG_REGISTER", "Starting Register User Request");
 
-                Retrofit retrofit = new Retrofit.Builder()
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .baseUrl(getString(R.string.retrofit_service))
-                        .build();
-
-                ServiceSoa serviceSoa = retrofit.create(ServiceSoa.class);
-
-                Call<ResponseRegisterUser> call = serviceSoa.respRegisterUser(requestRegisterUser);
-                call.enqueue(new Callback<ResponseRegisterUser>() {
-                    @Override
-                    public void onResponse(Call<ResponseRegisterUser> call, Response<ResponseRegisterUser> response) {
-
-                        if(response.isSuccessful()){
-                            String resp = response.body().getEnv();
-                            resp += " - " + response.body().getToken();
-                            resp += " - " + response.body().getToken_refresh();
-
-                            Log.i("LOG_REGISTER","Respuesta: " + resp);
-
-                            Intent loginIntent =new Intent(RegisterActivity.this,LoginActivity.class);
-                            loginIntent.putExtra("user",inputTextEmailR.getText().toString());
-                            loginIntent.putExtra("pass",inputTextPassR.getText().toString());
-
-                            startActivity(loginIntent);
-
-                            finish();
-                        }
-                        else {
-                            Log.e("LOG_REGISTER",response.errorBody().toString());
-                            Toast.makeText(getApplicationContext(),"Datos Invalidos",Toast.LENGTH_LONG).show();
-                        }
-
-                        Log.i("LOG_REGISTER","Fin Mensaje");
+                    RequestRegisterUser requestRegisterUser = new RequestRegisterUser();
+                    requestRegisterUser.setEnv(getString(R.string.enviroment)); //puede ser TEST o PROD
+                    requestRegisterUser.setName(inputTextName.getText().toString());
+                    requestRegisterUser.setLastname(inputTextLastname.getText().toString());
+                    requestRegisterUser.setDni(Long.parseLong(inputTextDni.getText().toString()));
+                    requestRegisterUser.setEmail(inputTextEmailR.getText().toString());
+                    if(inputTextPassR.getText().toString().length() < 8) {
+                        Toast.makeText(getApplicationContext(), "La contraseña debe tener al menos 8 caracteres", Toast.LENGTH_LONG).show();
+                        return;
                     }
+                    else
+                        requestRegisterUser.setPassword(inputTextPassR.getText().toString());
+                    requestRegisterUser.setCommission(Long.parseLong(inputTextCommission.getText().toString()));
 
-                    @Override
-                    public void onFailure(Call<ResponseRegisterUser> call, Throwable t) {
-                        Log.e("LOG_REGISTER",t.getMessage());
-                        Toast.makeText(getApplicationContext(),"Error al registrar",Toast.LENGTH_LONG).show();
-                    }
-                });
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .baseUrl(getString(R.string.retrofit_service))
+                            .build();
+
+                    ServiceSoa serviceSoa = retrofit.create(ServiceSoa.class);
+
+                    Call<ResponseRegisterUser> call = serviceSoa.respRegisterUser(requestRegisterUser);
+                    call.enqueue(new Callback<ResponseRegisterUser>() {
+                        @Override
+                        public void onResponse(Call<ResponseRegisterUser> call, Response<ResponseRegisterUser> response) {
+
+                            if (response.isSuccessful()) {
+                                String resp = response.body().getEnv();
+                                resp += " - " + response.body().getToken();
+                                resp += " - " + response.body().getToken_refresh();
+
+                                Log.i("LOG_REGISTER", "Respuesta: " + resp);
+
+                                Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                loginIntent.putExtra("user", inputTextEmailR.getText().toString());
+                                loginIntent.putExtra("pass", inputTextPassR.getText().toString());
+
+                                startActivity(loginIntent);
+
+                                finish();
+                            } else {
+                                Log.e("LOG_REGISTER", response.errorBody().toString());
+                                Toast.makeText(getApplicationContext(), "Datos Invalidos", Toast.LENGTH_LONG).show();
+                            }
+
+                            Log.i("LOG_REGISTER", "Fin Mensaje");
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseRegisterUser> call, Throwable t) {
+                            Log.e("LOG_REGISTER", t.getMessage());
+                            Toast.makeText(getApplicationContext(), "Error al registrar", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"Se necesita conexion a internet...",Toast.LENGTH_LONG).show();
+                }
             }
         });
 
         Log.i("LOG_REGISTER","Register User Finished");
+    }
+
+
+    private boolean internetConection() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if(networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }

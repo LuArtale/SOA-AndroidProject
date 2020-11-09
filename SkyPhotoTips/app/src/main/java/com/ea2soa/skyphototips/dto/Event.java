@@ -3,9 +3,9 @@ package com.ea2soa.skyphototips.dto;
 public class Event {
 
     private String type_events;
-    private Long dni;
+    private long dni;
     private String description;
-    private Long id;
+    private long id;
 
     @Override
     public String toString() {
@@ -25,11 +25,11 @@ public class Event {
         this.type_events = type_events;
     }
 
-    public Long getDni() {
+    public long getDni() {
         return dni;
     }
 
-    public void setDni(Long dni) {
+    public void setDni(long dni) {
         this.dni = dni;
     }
 
@@ -41,11 +41,11 @@ public class Event {
         this.description = description;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 }

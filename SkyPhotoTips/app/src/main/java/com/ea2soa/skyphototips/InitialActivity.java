@@ -3,8 +3,10 @@ package com.ea2soa.skyphototips;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ public class InitialActivity extends AppCompatActivity {
     private EditText inputTextPass;
     private Button buttonLogin;
     private Button buttonRegister;
+    private EditText textBattery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +37,34 @@ public class InitialActivity extends AppCompatActivity {
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
 
+        textBattery = (EditText)findViewById(R.id.textBattery);
+
         buttonLogin.setOnClickListener(botonesListeners);
         buttonRegister.setOnClickListener(botonesListeners);
 
+        this.registerReceiver(this.mBatInfoReceiver,
+                new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+
         if(getString(R.string.enviroment).equals("TEST")) {
-            //inputTextUser.setText(getString(R.string.userLu));
-            //inputTextPass.setText(getString(R.string.passLu));
-            Intent continueIntent;
+            inputTextUser.setText(getString(R.string.userLu));
+            inputTextPass.setText(getString(R.string.passLu));
+            /*Intent continueIntent;
             continueIntent=new Intent(InitialActivity.this, SensorsCheckActivity.class);
             continueIntent.putExtra("user",getString(R.string.userLu));
             continueIntent.putExtra("pass",getString(R.string.passLu));
             continueIntent.putExtra("tokenRefresh","modoTEST");
-            startActivity(continueIntent);
+            startActivity(continueIntent);*/
         }
     }
+
+    private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context arg0, Intent intent) {
+            // TODO Auto-generated method stub
+            int level = intent.getIntExtra("level", 0);
+            textBattery.setText(String.valueOf(level) + "%");
+        }
+    };
 
     @Override
     protected void onStart() {
