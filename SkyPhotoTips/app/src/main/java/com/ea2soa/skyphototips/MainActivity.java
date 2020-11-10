@@ -4,12 +4,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -286,13 +289,28 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mSensorManager.unregisterListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD));
     }
 
+    private boolean internetConection() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if(networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
 
     @Override
     protected void onStart() {
         Log.i("LOG_MAIN:", "Ejecuto OnStart");
         super.onStart();
 
-        new TimeAndWeatherManager(sharedPref, this).execute();
+        if(internetConection())
+            new TimeAndWeatherManager(sharedPref, this).execute();
+        else
+            Toast.makeText(getApplicationContext(),"Se necesita conexion a internet...",Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -329,7 +347,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Ini_Sensores();
         super.onRestart();
     }
-
 
 
 }
