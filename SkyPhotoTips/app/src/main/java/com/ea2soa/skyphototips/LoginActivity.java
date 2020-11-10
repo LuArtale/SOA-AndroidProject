@@ -100,6 +100,7 @@ public class LoginActivity extends Activity {
                     continueIntent.putExtra("user",requestLogin.getEmail());
                     continueIntent.putExtra("pass",requestLogin.getPassword());
                     continueIntent.putExtra("tokenRefresh",tokenRefresh);
+                    continueIntent.putExtra("from", "login");
 
                     //REGISTRAR EVENTO
                     //executeRegisterEvent(getString(R.string.enviroment), "login", "El usuario " + requestLogin.getEmail() + " inicio sesion.", token);

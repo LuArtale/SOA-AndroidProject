@@ -61,7 +61,7 @@ public class TimeAndWeatherManager extends AsyncTask<Void, Void, String> {
                 publishProgress();
             }
 
-            weatherAnalisis = readWeather();
+            weatherAnalisis = "Ok";
 
             Log.i("LOG_TM_MANAGER:", "Datos guardados despues: " + savedTimeWeather);
 

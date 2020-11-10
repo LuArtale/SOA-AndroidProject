@@ -60,7 +60,6 @@ public class InitialActivity extends AppCompatActivity {
     private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver(){
         @Override
         public void onReceive(Context arg0, Intent intent) {
-            // TODO Auto-generated method stub
             int level = intent.getIntExtra("level", 0);
             textBattery.setText(String.valueOf(level) + "%");
         }
@@ -117,6 +116,12 @@ public class InitialActivity extends AppCompatActivity {
                 case R.id.buttonLogin:
 
                     if(internetConection()) {
+
+                        if(!checkFields()){
+                            Toast.makeText(getApplicationContext(), "Completar todos los campos", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
                         intent=new Intent(InitialActivity.this,LoginActivity.class);
                         intent.putExtra("user",inputTextUser.getText().toString());
                         intent.putExtra("pass",inputTextPass.getText().toString());
@@ -162,6 +167,11 @@ public class InitialActivity extends AppCompatActivity {
         }
     }
 
-
+    public boolean checkFields() {
+        if(!inputTextUser.getText().toString().equals("") && !inputTextPass.getText().toString().equals("")){
+            return true;
+        }
+        return false;
+    }
 
 }

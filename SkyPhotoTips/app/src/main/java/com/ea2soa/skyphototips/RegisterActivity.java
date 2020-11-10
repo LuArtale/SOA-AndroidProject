@@ -67,6 +67,11 @@ public class RegisterActivity extends Activity {
 
                     Log.i("LOG_REGISTER", "Starting Register User Request");
 
+                    if(!checkFields()){
+                        Toast.makeText(getApplicationContext(), "Completar todos los campos", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     RequestRegisterUser requestRegisterUser = new RequestRegisterUser();
                     requestRegisterUser.setEnv(getString(R.string.enviroment)); //puede ser TEST o PROD
                     requestRegisterUser.setName(inputTextName.getText().toString());
@@ -141,6 +146,20 @@ public class RegisterActivity extends Activity {
         else {
             return false;
         }
+    }
+
+
+    public boolean checkFields() {
+        if(!inputTextName.getText().toString().equals("") &&
+                !inputTextLastname.getText().toString().equals("") &&
+                !inputTextDni.getText().toString().equals("") &&
+                !inputTextEmailR.getText().toString().equals("") &&
+                !inputTextPassR.getText().toString().equals("") &&
+                !inputTextCommission.getText().toString().equals("")){
+
+            return true;
+        }
+        return false;
     }
 
 }

@@ -97,7 +97,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         editor.apply();
     }
 
-
+    public String readWeather() {
+        return sharedPref.getString(getString(R.string.saved_last_weather), "Sin Datos");
+    }
 
     public void informBadWeather() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -175,12 +177,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         editTextTimezone.setText(location);
     }
 
-    public void showCondition(String condition) {
-        editTextCondicion.setText(condition);
-        if(!condition.equals("Despejado") && !condition.equals("Pocas Nubes")) {
-            informBadWeather();
+    public void showCondition(String message) {
+        if(message.equals("Ok")) {
+            String condition = readWeather();
+            Log.e("LOG_LOGIN","Show condition = " + condition);
+            editTextCondicion.setText(condition);
+            if(condition.equals("Muchas nubes y posible lluvia")) {
+                informBadWeather();
+            }
+            tokenManager.executeRegisterEvent(getString(R.string.enviroment), "background", "Se ejecuto el analisis de clima en background.");
         }
-        tokenManager.executeRegisterEvent(getString(R.string.enviroment), "background", "Se ejecuto el analisis de clima en background.");
+        else {
+            editTextCondicion.setText(message);
+            Toast.makeText(getApplicationContext(),"Error en los datos del clima",Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -223,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             azimut = orientation[0];
                             editText.setText(String.valueOf(azimut));
 
-                            imgFrontNavArrow.setRotation((float) (-azimut*270/3.14159));
+                            imgFrontNavArrow.setRotation((float) (-azimut*180/3.14159)-90);
                         }
                     }
 
@@ -243,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             azimut = orientation[0];
                             editText.setText(String.valueOf(azimut));
 
-                            imgFrontNavArrow.setRotation((float) (-azimut*270/3.14159));
+                            imgFrontNavArrow.setRotation((float) (-azimut*180/3.14159)-90);
                         }
                     }
                     break;

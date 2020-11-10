@@ -16,6 +16,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.ea2soa.skyphototips.dto.TokenManager;
 
 
@@ -50,6 +52,12 @@ public class SensorsCheckActivity extends Activity implements SensorEventListene
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         tokenManager = new TokenManager(sharedPref);
+
+        Intent loginIntent=getIntent();
+        Bundle extras=loginIntent.getExtras();
+        if(extras != null && extras.get("from").equals("login")){
+            showLastSensorsData();
+        }
 
         buttonContinue.setOnClickListener(new OnClickListener()
         {
@@ -158,6 +166,14 @@ public class SensorsCheckActivity extends Activity implements SensorEventListene
     protected void onPause()
     {
         Parar_Sensores();
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("last_data_acelerometer", inputTextAcelerometro.getText().toString());
+        editor.putString("last_data_giroscope", inputTextGiroscopo.getText().toString());
+        editor.putString("last_data_magnetic", inputTextMagnetico.getText().toString());
+        editor.putString("last_data_light", inputTextLuminosidad.getText().toString());
+        editor.apply();
+
         super.onPause();
     }
 
@@ -175,6 +191,21 @@ public class SensorsCheckActivity extends Activity implements SensorEventListene
         Ini_Sensores();
     }
 
+    public void showLastSensorsData() {
+
+        String sensorsData = "Acelerometro: \n" + sharedPref.getString("last_data_acelerometer", "Sin Datos");
+        sensorsData += "\nGiroscopo: \n" + sharedPref.getString("last_data_giroscope", "Sin Datos");
+        sensorsData += "\nMagnetico: \n" + sharedPref.getString("last_data_magnetic", "Sin Datos");
+        sensorsData += "\nLuminosidad: \n" + sharedPref.getString("last_data_light", "Sin Datos");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Datos previos de los sensores");
+        builder.setMessage(sensorsData);
+        builder.setPositiveButton("Aceptar", null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
 
 }
