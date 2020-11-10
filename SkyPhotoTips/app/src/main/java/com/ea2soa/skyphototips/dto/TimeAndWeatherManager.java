@@ -14,20 +14,27 @@ public class TimeAndWeatherManager extends AsyncTask<Void, Void, String> {
     MainActivity activity;
     private Long currentDateEpoch;
     private Long savedTimeWeather;
+    private Boolean alive;
 
 
-    public TimeAndWeatherManager(SharedPreferences sharedPref, MainActivity activity) {
-        this.sharedPref = sharedPref;
-        this.activity = activity;
+    public Boolean getAlive() {
+        return alive;
+    }
+
+    public void setAlive(Boolean alive) {
+        this.alive = alive;
     }
 
 
 
-    /*public void saveWeather(String weather) {
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("saved_last_weather", weather);
-        editor.apply();
-    }*/
+    public TimeAndWeatherManager(SharedPreferences sharedPref, MainActivity activity, Boolean alive) {
+        this.sharedPref = sharedPref;
+        this.activity = activity;
+        this.alive = alive;
+    }
+
+
+
 
     public String readWeather() {
         return sharedPref.getString("saved_last_weather", "Sin Datos");
@@ -36,6 +43,7 @@ public class TimeAndWeatherManager extends AsyncTask<Void, Void, String> {
     @Override
     protected String doInBackground(Void... voids) {
 
+        alive = true;
         String weatherAnalisis = "Error";
 
         try {
@@ -76,6 +84,7 @@ public class TimeAndWeatherManager extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String message) {
+        alive = false;
         activity.showCondition(message);
     }
 
@@ -85,60 +94,4 @@ public class TimeAndWeatherManager extends AsyncTask<Void, Void, String> {
     }
 
 
-    /*public void analizeWeather() {
-
-        Log.i("LOG_MAIN","Analizando clima");
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(getString(R.string.openweather_service))
-                .build();
-
-        ServiceOpenWeather openWeatherService = retrofit.create(ServiceOpenWeather.class);
-
-        Call<ResponseGetWeather> call = openWeatherService.getWeatherForecast(
-                getString(R.string.openweather_lat),
-                getString(R.string.openweather_lon),
-                getString(R.string.openweather_exclude),
-                getString(R.string.openweather_units),
-                getString(R.string.openweather_appid));
-        call.enqueue(new Callback<ResponseGetWeather>() {
-            @Override
-            public void onResponse(Call<ResponseGetWeather> call, Response<ResponseGetWeather> response) {
-                if(response.isSuccessful()){
-
-                    editTextTimezone.setText(response.body().getTimezone());
-                    DailyWeather dailyWeatherToday = response.body().getDaily()[0];
-
-                    Log.i("LOG_MAIN","Weather - dailyWeatherToday: " + dailyWeatherToday.toString());
-
-                    if(dailyWeatherToday.getWeather()[0].getId() == 800) {
-                        saveWeather("Despejado");
-                    }
-                    else {
-                        if(dailyWeatherToday.getWeather()[0].getId() == 801 || dailyWeatherToday.getClouds() < 20) {
-                            saveWeather("Pocas Nubes");
-                        }
-                        else {
-                            saveWeather("Muchas nubes y posible lluvia");
-                        }
-                    }
-                }
-                else {
-                    saveWeather("Error");
-                    Log.e("LOG_MAIN",response.errorBody().toString());
-                    Log.e("LOG_MAIN","Error de datos en analizeWeather()");
-                }
-
-                Log.i("LOG_MAIN","Fin analisis clima");
-            }
-
-            @Override
-            public void onFailure(Call<ResponseGetWeather> call, Throwable t) {
-                Log.e("LOG_LOGIN",t.getMessage());
-                Toast.makeText(getApplicationContext(),"Error al analizar el clima",Toast.LENGTH_LONG).show();
-                Log.e("LOG_LOGIN","Error al analizar el clima");
-            }
-        });
-    }*/
 }

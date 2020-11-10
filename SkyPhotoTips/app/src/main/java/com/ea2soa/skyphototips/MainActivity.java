@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
     private ImageView imgFrontNavArrow;
+    private Button buttonCheckSensores;
 
     private float[] mGravity;
     private float[] mGeomagnetic;
@@ -56,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private ImageView imgBadPosition;
     private ImageView imgOkPosition;
 
-    private TextView editText;
     private TextView editTextTimezone;
     private TextView editTextCondicion;
 
@@ -79,16 +81,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         imgFrontNavArrow = (ImageView) findViewById(R.id.imgFrontNavArrow);
         imgFrontNavArrow.setVisibility(View.VISIBLE);
 
+        Button buttonCheckSensores = (Button) findViewById(R.id.buttonCheckSensores);
+
         correctPosition = false;
         imgBadPosition = (ImageView) findViewById(R.id.imgBadPosition);
         imgOkPosition = (ImageView) findViewById(R.id.imgOkPosition);
         imgOkPosition.setVisibility(View.INVISIBLE);
 
-        editText = (TextView) findViewById(R.id.editText);
         editTextTimezone = (TextView) findViewById((R.id.editTextTimezone));
         editTextCondicion = (TextView) findViewById((R.id.editTextCondicion));
 
-        tmManager = new TimeAndWeatherManager(sharedPref, this);
+        buttonCheckSensores.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Log.i("LOG_MAIN","Go to check sensors");
+                Intent checkSensorsIntent=new Intent(MainActivity.this, SensorsCheckActivity.class);
+                checkSensorsIntent.putExtra("from","main");
+                startActivity(checkSensorsIntent);
+                finish();
+            }
+        });
+
+        tmManager = new TimeAndWeatherManager(sharedPref, this, false);
     }
 
     public void saveWeather(String weather) {
@@ -231,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             SensorManager.getOrientation(rotation, orientation);
 
                             azimut = orientation[0];
-                            editText.setText(String.valueOf(azimut));
 
                             imgFrontNavArrow.setRotation((float) (-azimut*180/3.14159)-90);
                         }
@@ -251,7 +266,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             SensorManager.getOrientation(rotation, orientation);
 
                             azimut = orientation[0];
-                            editText.setText(String.valueOf(azimut));
 
                             imgFrontNavArrow.setRotation((float) (-azimut*180/3.14159)-90);
                         }
@@ -280,7 +294,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Log.i("LOG_MAIN:", "Ejecuto OnStart");
         super.onStart();
 
-        tmManager.execute();
+        if(tmManager.getAlive() == false)
+            tmManager.execute();
     }
 
     @Override

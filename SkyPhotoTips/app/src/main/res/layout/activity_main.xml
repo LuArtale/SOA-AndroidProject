@@ -63,19 +63,6 @@
         app:srcCompat="@android:drawable/checkbox_on_background" />
 
     <EditText
-        android:id="@+id/editText"
-        android:layout_width="99dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="540dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.605"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
         android:id="@+id/editTextTimezone"
         android:layout_width="339dp"
         android:layout_height="40dp"
@@ -122,15 +109,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView14"
+    <Button
+        android:id="@+id/buttonCheckSensores"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="548dp"
-        android:text="Azimut:"
-        android:textSize="12sp"
+        android:layout_marginTop="528dp"
+        android:text="Check Sensores"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.375"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

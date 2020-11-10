@@ -53,8 +53,8 @@ public class SensorsCheckActivity extends Activity implements SensorEventListene
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         tokenManager = new TokenManager(sharedPref);
 
-        Intent loginIntent=getIntent();
-        Bundle extras=loginIntent.getExtras();
+        Intent intent=getIntent();
+        Bundle extras=intent.getExtras();
         if(extras != null && extras.get("from").equals("login")){
             showLastSensorsData();
         }
@@ -64,7 +64,7 @@ public class SensorsCheckActivity extends Activity implements SensorEventListene
             @Override
             public void onClick(View v)
             {
-                if(inputTextAcelerometro.getText() != null && inputTextMagnetico.getText() != null) {
+                if(inputTextAcelerometro.getText() != null && inputTextMagnetico.getText() != null && !extras.get("from").equals("main")) {
                     Log.i("LOG_SENSORS_CHECK","Registrando evento sensores");
                     tokenManager.executeRegisterEvent(getString(R.string.enviroment), "sensors_activity", "Los sensores ACELEROMETRO y MAGNETCO tienen actividad");
                 }
@@ -75,6 +75,7 @@ public class SensorsCheckActivity extends Activity implements SensorEventListene
                 continueIntent=new Intent(SensorsCheckActivity.this, MainActivity.class);
 
                 startActivity(continueIntent);
+                finish();
             }
         });
     }

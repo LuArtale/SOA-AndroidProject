@@ -103,7 +103,6 @@ public class LoginActivity extends Activity {
                     continueIntent.putExtra("from", "login");
 
                     //REGISTRAR EVENTO
-                    //executeRegisterEvent(getString(R.string.enviroment), "login", "El usuario " + requestLogin.getEmail() + " inicio sesion.", token);
                     tokenManager.executeRegisterEvent(getString(R.string.enviroment), "login", "El usuario " + requestLogin.getEmail() + " inicio sesion.");
 
                     Toast.makeText(getApplicationContext(),"Bienvenido!",Toast.LENGTH_LONG).show();
@@ -164,8 +163,6 @@ public class LoginActivity extends Activity {
                 }
                 else {
                     Log.e("LOG_LOGIN",response.errorBody().toString());
-
-                    //Toast.makeText(getApplicationContext(),"Error de datos en Registro Login",Toast.LENGTH_LONG).show();
                     Log.e("LOG_LOGIN","Error de datos en Registro Login");
                 }
 
