@@ -3,10 +3,8 @@ package com.ea2soa.skyphototips;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -14,15 +12,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ea2soa.skyphototips.dto.RequestRegisterUser;
 import com.ea2soa.skyphototips.dto.ResponseRegisterUser;
 import com.ea2soa.skyphototips.services.ServiceSoa;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -14,23 +14,12 @@ public class TimeAndWeatherManager extends AsyncTask<Void, Void, String> {
     MainActivity activity;
     private Long currentDateEpoch;
     private Long savedTimeWeather;
-    private Boolean alive;
-
-
-    public Boolean getAlive() {
-        return alive;
-    }
-
-    public void setAlive(Boolean alive) {
-        this.alive = alive;
-    }
 
 
 
-    public TimeAndWeatherManager(SharedPreferences sharedPref, MainActivity activity, Boolean alive) {
+    public TimeAndWeatherManager(SharedPreferences sharedPref, MainActivity activity) {
         this.sharedPref = sharedPref;
         this.activity = activity;
-        this.alive = alive;
     }
 
 
@@ -43,7 +32,6 @@ public class TimeAndWeatherManager extends AsyncTask<Void, Void, String> {
     @Override
     protected String doInBackground(Void... voids) {
 
-        alive = true;
         String weatherAnalisis = "Error";
 
         try {
@@ -84,7 +72,6 @@ public class TimeAndWeatherManager extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String message) {
-        alive = false;
         activity.showCondition(message);
     }
 

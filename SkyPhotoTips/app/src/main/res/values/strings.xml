@@ -4,8 +4,6 @@
     <string name="enviroment">PROD</string> <!-- PROD / TEST -->
     <string name="saved_time_weather">saved_time_weather</string>
     <string name="saved_last_weather">saved_last_weather</string>
-    <string name="userLu">lartale@alumno.unlam.edu.ar</string>
-    <string name="passLu">asdASD123</string>
     <string name="openweather_service">https://api.openweathermap.org/data/2.5/</string>
     <string name="openweather_lat">-34.659774</string>
     <string name="openweather_lon">-58.670787</string>

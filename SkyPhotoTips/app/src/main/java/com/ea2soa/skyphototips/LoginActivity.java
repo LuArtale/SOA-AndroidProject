@@ -133,51 +133,5 @@ public class LoginActivity extends Activity {
 
     }
 
-    public void executeRegisterEvent(String env, String type_events, String desc, String token) {
-
-        Log.i("LOG_LOGIN","Registering Login");
-
-        RequestRegisterEvent requestRegisterEvent = new RequestRegisterEvent();
-        requestRegisterEvent.setEnv(env);
-        requestRegisterEvent.setType_events(type_events);
-        requestRegisterEvent.setDescription(desc);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(getString(R.string.retrofit_service))
-                .build();
-
-        ServiceSoa serviceSoa = retrofit.create(ServiceSoa.class);
-
-        Call<ResponseRegisterEvent> call = serviceSoa.respRegisterEvent(token, requestRegisterEvent);
-        call.enqueue(new Callback<ResponseRegisterEvent>() {
-            @Override
-            public void onResponse(Call<ResponseRegisterEvent> call, Response<ResponseRegisterEvent> response) {
-
-                if(response.isSuccessful()){
-                    String envResp = response.body().getEnv();
-                    Event eventResp = response.body().getEvent();
-
-                    Log.i("LOG_LOGIN","Register Event - enviroment: " + envResp);
-                    Log.i("LOG_LOGIN","Register Event - event: " + eventResp.toString());
-                }
-                else {
-                    Log.e("LOG_LOGIN",response.errorBody().toString());
-                    Log.e("LOG_LOGIN","Error de datos en Registro Login");
-                }
-
-                Log.i("LOG_LOGIN","Fin Mensaje");
-            }
-
-            @Override
-            public void onFailure(Call<ResponseRegisterEvent> call, Throwable t) {
-                Log.e("LOG_LOGIN",t.getMessage());
-                Toast.makeText(getApplicationContext(),"Error al registrar evento Login",Toast.LENGTH_LONG).show();
-                Log.e("LOG_LOGIN","Error al registrar evento Login");
-            }
-        });
-
-    }
-
 
 }

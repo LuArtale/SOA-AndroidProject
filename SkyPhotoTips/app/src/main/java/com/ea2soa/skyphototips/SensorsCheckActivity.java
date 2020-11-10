@@ -110,7 +110,7 @@ public class SensorsCheckActivity extends Activity implements SensorEventListene
 
         synchronized (this)
         {
-            Log.d("sensor", event.sensor.getName());
+            //Log.d("sensor", event.sensor.getName());
 
             switch(event.sensor.getType())
             {

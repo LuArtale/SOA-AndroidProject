@@ -2,7 +2,6 @@ package com.ea2soa.skyphototips;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -44,17 +43,6 @@ public class InitialActivity extends AppCompatActivity {
 
         this.registerReceiver(this.mBatInfoReceiver,
                 new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-
-        if(getString(R.string.enviroment).equals("TEST")) {
-            inputTextUser.setText(getString(R.string.userLu));
-            inputTextPass.setText(getString(R.string.passLu));
-            /*Intent continueIntent;
-            continueIntent=new Intent(InitialActivity.this, SensorsCheckActivity.class);
-            continueIntent.putExtra("user",getString(R.string.userLu));
-            continueIntent.putExtra("pass",getString(R.string.passLu));
-            continueIntent.putExtra("tokenRefresh","modoTEST");
-            startActivity(continueIntent);*/
-        }
     }
 
     private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver(){
@@ -83,6 +71,7 @@ public class InitialActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         Log.i("LOG_INITIAL:", "Ejecuto OnPause");
+        inputTextPass.setText("");
         super.onPause();
     }
 

@@ -103,8 +103,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 finish();
             }
         });
-
-        tmManager = new TimeAndWeatherManager(sharedPref, this, false);
     }
 
     public void saveWeather(String weather) {
@@ -294,8 +292,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Log.i("LOG_MAIN:", "Ejecuto OnStart");
         super.onStart();
 
-        if(tmManager.getAlive() == false)
-            tmManager.execute();
+        new TimeAndWeatherManager(sharedPref, this).execute();
     }
 
     @Override
