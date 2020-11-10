@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private float orientation[] = new float[3];
     private float azimut;
 
-    private static final Double limitAcelerometerLowXY = -3.00;
-    private static final Double limitAcelerometerHighXY = 3.00;
-    private static final Double limitAcelerometerLowZ = 8.00;
+    private static final Double limitAcelerometerLowXY = -4.00;
+    private static final Double limitAcelerometerHighXY = 4.00;
+    private static final Double limitAcelerometerLowZ = 6.00;
     private static final Double limitAcelerometerHighZ = 10.00;
 
     private Boolean correctPosition;
